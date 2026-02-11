@@ -1,1 +1,1625 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BT VAULT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #2d2d2d;
+            --accent-color: #ff6600;
+            --accent-hover: #ff8833;
+            --text-primary: #ffffff;
+            --text-secondary: #aaaaaa;
+            --border-color: #333333;
+            --card-blur: 10px;
+            --animation-speed: 0.3s;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #1a0f2e 100%);
+            color: var(--text-primary);
+            display: flex !important;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background Particles */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--accent-color), 0 0 30px var(--accent-color);
+        }
+
+        /* Individual keyframes for particles */
+        @keyframes particle-rise {
+            0% {
+                bottom: -10px;
+                opacity: 0;
+            }
+            5% {
+                opacity: 1;
+            }
+            95% {
+                opacity: 1;
+            }
+            100% {
+                bottom: calc(100vh + 10px);
+                opacity: 0;
+            }
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(255, 102, 0, 0.3);
+            border-bottom: 3px solid var(--accent-color);
+            backdrop-filter: blur(var(--card-blur));
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-hover), #ffaa33);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 5px rgba(255, 102, 0, 0.5)); }
+            to { filter: drop-shadow(0 0 15px rgba(255, 102, 0, 0.8)); }
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .panic-btn, .settings-btn {
+            border: none;
+            padding: 12px 28px;
+            font-size: 15px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all var(--animation-speed) ease;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .panic-btn {
+            background: linear-gradient(135deg, #ff0000, #cc0000);
+            color: white;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4); }
+            50% { box-shadow: 0 4px 25px rgba(255, 0, 0, 0.8); }
+        }
+
+        .panic-btn:hover, .settings-btn:hover {
+            transform: scale(1.08);
+        }
+
+        .settings-btn {
+            background: linear-gradient(135deg, var(--bg-tertiary), #3d3d3d);
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
+        }
+
+        .settings-btn:hover {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            color: white;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            background: var(--bg-secondary);
+            display: flex;
+            padding: 0 30px;
+            gap: 8px;
+            border-bottom: 2px solid var(--border-color);
+            backdrop-filter: blur(var(--card-blur));
+            position: sticky;
+            top: 73px;
+            z-index: 999;
+            position: relative;
+        }
+
+        .nav-tab {
+            padding: 16px 35px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--animation-speed) ease;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            position: relative;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .nav-tab::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: var(--accent-color);
+            transition: width var(--animation-speed) ease;
+        }
+
+        .nav-tab:hover {
+            background: rgba(255, 102, 0, 0.1);
+            color: var(--accent-color);
+        }
+
+        .nav-tab:hover::after {
+            width: 80%;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            color: white;
+        }
+
+        .nav-tab.active::after {
+            width: 100%;
+        }
+
+        /* Content */
+        .content {
+            flex: 1;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 10;
+        }
+
+        .tab-content {
+            display: none;
+            flex: 1;
+            animation: fadeIn var(--animation-speed) ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tab-content.active {
+            display: flex !important;
+            flex-direction: column;
+        }
+
+        /* Search */
+        .search-container {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-bar {
+            width: 100%;
+            max-width: 650px;
+            padding: 18px 25px 18px 55px;
+            font-size: 16px;
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            color: var(--text-primary);
+            transition: all var(--animation-speed) ease;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cpath d='m21 21-4.35-4.35'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: 20px center;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 25px rgba(255, 102, 0, 0.4);
+            background-color: var(--bg-secondary);
+        }
+
+        /* Games Grid */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 25px;
+            padding: 20px 0;
+        }
+
+        .game-card {
+            background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid var(--border-color);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-hover));
+            transform: scaleX(0);
+            transition: transform var(--animation-speed) ease;
+        }
+
+        .game-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-color);
+            box-shadow: 0 15px 40px rgba(255, 102, 0, 0.4);
+        }
+
+        .game-icon {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            border-radius: 20px;
+            font-size: 45px;
+            box-shadow: 0 8px 25px rgba(255, 102, 0, 0.4);
+            transition: all var(--animation-speed) ease;
+            color: white;
+        }
+
+        .game-card:hover .game-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 12px 35px rgba(255, 102, 0, 0.6);
+        }
+
+        .game-title {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            color: var(--text-primary);
+            min-height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .game-actions {
+            display: flex;
+            gap: 10px;
+            flex-direction: column;
+        }
+
+        .launch-btn, .download-btn {
+            border: none;
+            padding: 12px 22px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all var(--animation-speed) ease;
+            width: 100%;
+            font-family: 'Poppins', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .launch-btn {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            color: white;
+        }
+
+        .launch-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 102, 0, 0.5);
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #0066cc, #0088ff);
+            color: white;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 102, 255, 0.5);
+        }
+
+        /* Chat */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 650px;
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            border: 2px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .chat-header {
+            padding: 20px;
+            background: var(--bg-tertiary);
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .online-count {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .chat-message {
+            background: var(--bg-tertiary);
+            padding: 15px 18px;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-color);
+            animation: slideIn var(--animation-speed) ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .chat-username {
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .chat-text {
+            color: var(--text-primary);
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .chat-time {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+
+        .chat-input-container {
+            padding: 25px;
+            background: var(--bg-tertiary);
+            border-top: 2px solid var(--border-color);
+            display: flex;
+            gap: 12px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 14px 18px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            transition: all var(--animation-speed) ease;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(255, 102, 0, 0.3);
+        }
+
+        .chat-send-btn {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all var(--animation-speed) ease;
+            font-family: 'Poppins', sans-serif;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.3);
+        }
+
+        .chat-send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 102, 0, 0.5);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex !important;
+            animation: fadeIn var(--animation-speed) ease;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border-radius: 20px;
+            padding: 35px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            border: 3px solid var(--accent-color);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideUp var(--animation-speed) ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .modal-title {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-hover));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 32px;
+            cursor: pointer;
+            transition: all var(--animation-speed) ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .modal-close:hover {
+            color: var(--accent-color);
+            background: rgba(255, 102, 0, 0.1);
+            transform: rotate(90deg);
+        }
+
+        .setting-group {
+            margin-bottom: 28px;
+        }
+
+        .setting-label {
+            display: block;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .setting-input, .setting-select {
+            width: 100%;
+            padding: 14px 18px;
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            transition: all var(--animation-speed) ease;
+        }
+
+        .setting-input:focus, .setting-select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(255, 102, 0, 0.3);
+        }
+
+        .setting-select option {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 15px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+        }
+
+        .theme-card {
+            padding: 20px;
+            border-radius: 15px;
+            border: 3px solid var(--border-color);
+            cursor: pointer;
+            text-align: center;
+            transition: all var(--animation-speed) ease;
+            background: var(--bg-tertiary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            transition: all var(--animation-speed) ease;
+        }
+
+        .theme-card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(255, 102, 0, 0.3);
+        }
+
+        .theme-card.active {
+            border-color: var(--accent-color);
+            background: linear-gradient(135deg, rgba(255, 102, 0, 0.1), rgba(255, 136, 51, 0.1));
+            box-shadow: 0 10px 30px rgba(255, 102, 0, 0.5);
+        }
+
+        .theme-card.active::before {
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-hover));
+        }
+
+        .theme-emoji {
+            font-size: 42px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .theme-name {
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .theme-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .theme-badge.animated {
+            background: linear-gradient(135deg, #ff00ff, #ff6600);
+            color: white;
+        }
+
+        .theme-badge.static {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            color: white;
+            border: none;
+            padding: 16px 35px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            transition: all var(--animation-speed) ease;
+            font-family: 'Poppins', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 6px 20px rgba(255, 102, 0, 0.4);
+        }
+
+        .save-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(255, 102, 0, 0.6);
+        }
+
+        /* Game Fullscreen */
+        .game-fullscreen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg-primary);
+            z-index: 9999;
+            flex-direction: column;
+        }
+
+        .game-fullscreen.active {
+            display: flex !important;
+        }
+
+        .game-header {
+            background: var(--bg-secondary);
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--accent-color);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .close-game, .fullscreen-btn {
+            border: none;
+            padding: 10px 22px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            transition: all var(--animation-speed) ease;
+        }
+
+        .close-game {
+            background: linear-gradient(135deg, #ff0000, #cc0000);
+            color: white;
+        }
+
+        .fullscreen-btn {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            color: white;
+        }
+
+        .close-game:hover, .fullscreen-btn:hover {
+            transform: scale(1.08);
+        }
+
+        .game-iframe {
+            flex: 1;
+            border: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--accent-hover), #ffaa33);
+        }
+
+        .no-results {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 20px;
+            margin-top: 60px;
+            font-weight: 600;
+        }
+
+        /* Animated theme backgrounds */
+        body.animated-theme {
+            position: relative;
+        }
+
+        body.animated-theme::before {
+            content: '';
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 600px;
+            height: 600px;
+            margin-left: -300px;
+            margin-top: -300px;
+            background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
+            opacity: 0;
+            animation: pulse-glow 3s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { 
+                transform: scale(0.8);
+                opacity: 0.08;
+            }
+            50% { 
+                transform: scale(1.2);
+                opacity: 0.15;
+            }
+        }
+
+        body.animated-theme::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(45deg, transparent 48%, var(--accent-color) 49%, var(--accent-color) 51%, transparent 52%),
+                linear-gradient(-45deg, transparent 48%, var(--accent-color) 49%, var(--accent-color) 51%, transparent 52%);
+            background-size: 100px 100px;
+            opacity: 0;
+            animation: grid-slide 20s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes grid-slide {
+            0% {
+                background-position: 0 0, 0 0;
+                opacity: 0.03;
+            }
+            50% {
+                opacity: 0.08;
+            }
+            100% {
+                background-position: 100px 100px, -100px 100px;
+                opacity: 0.03;
+            }
+        }
+
+        /* Additional pulsing circles for animated themes */
+        body.animated-theme .header {
+            animation: header-pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes header-pulse {
+            0%, 100% {
+                box-shadow: 0 8px 32px rgba(255, 102, 0, 0.3);
+            }
+            50% {
+                box-shadow: 0 8px 32px rgba(255, 102, 0, 0.6);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Particles -->
+    <div class="bg-particles" id="bgParticles"></div>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="logo"><i class="fas fa-vault"></i> BT VAULT</div>
+        <div class="header-actions">
+            <button class="settings-btn" onclick="openSettings()"><i class="fas fa-cog"></i> Settings</button>
+            <button class="panic-btn" id="panicBtn" onclick="activatePanic()"><i class="fas fa-exclamation-triangle"></i> PANIC</button>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-tabs">
+        <button class="nav-tab active" data-tab="arcade"><i class="fas fa-gamepad"></i> Arcade</button>
+        <button class="nav-tab" data-tab="chat"><i class="fas fa-comments"></i> Chat</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Arcade Tab -->
+        <div class="tab-content active" id="arcade">
+            <div class="search-container">
+                <input type="text" class="search-bar" id="searchBar" placeholder="Search 67 games..." onkeyup="filterGames()">
+            </div>
+            <div class="games-grid" id="gamesGrid"></div>
+            <div class="no-results" id="noResults" style="display: none;">
+                <i class="fas fa-sad-tear" style="font-size: 48px; margin-bottom: 15px; display: block;"></i>
+                No games found. Try a different search!
+            </div>
+        </div>
+
+        <!-- Chat Tab -->
+        <div class="tab-content" id="chat">
+            <div class="chat-container">
+                <div class="chat-header">
+                    <h3 style="font-size: 20px; font-weight: 700;"><i class="fas fa-comments"></i> Live Chat</h3>
+                    <div class="online-count"><i class="fas fa-circle" style="color: #00ff88;"></i> <span id="onlineCount">0</span> Online</div>
+                </div>
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="chat-input-container">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Type your message..." onkeypress="handleChatEnter(event)">
+                    <button class="chat-send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i> Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><i class="fas fa-cog"></i> Settings</div>
+                <button class="modal-close" onclick="closeSettings()">×</button>
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-label"><i class="fas fa-link"></i> Panic Redirect URL</label>
+                <input type="text" class="setting-input" id="panicUrl" placeholder="https://classroom.google.com" value="https://classroom.google.com">
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-label"><i class="fas fa-keyboard"></i> Panic Keybind</label>
+                <input type="text" class="setting-input" id="panicKeybind" placeholder="Click to set..." readonly style="cursor: pointer;" onclick="recordKeybind()">
+                <button onclick="clearKeybind()" style="background: var(--bg-tertiary); color: var(--text-primary); border: 2px solid var(--border-color); padding: 10px 18px; border-radius: 8px; cursor: pointer; margin-top: 10px; font-size: 13px; font-family: 'Poppins', sans-serif; font-weight: 600; transition: all var(--animation-speed) ease;" onmouseover="this.style.borderColor='var(--accent-color)'" onmouseout="this.style.borderColor='var(--border-color)'"><i class="fas fa-trash"></i> Clear</button>
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-label"><i class="fas fa-user"></i> Username</label>
+                <input type="text" class="setting-input" id="username" placeholder="Enter username" value="Player">
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-label"><i class="fas fa-tachometer-alt"></i> Animation Speed</label>
+                <select class="setting-select" id="animationSpeed">
+                    <option value="0.2s">Fast</option>
+                    <option value="0.3s" selected>Normal</option>
+                    <option value="0.5s">Slow</option>
+                    <option value="0s">Instant</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-label"><i class="fas fa-wind"></i> Blur Effects</label>
+                <select class="setting-select" id="blurEffect">
+                    <option value="0px">None</option>
+                    <option value="5px">Low</option>
+                    <option value="10px" selected>Medium</option>
+                    <option value="15px">High</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-label"><i class="fas fa-font"></i> Font Size</label>
+                <select class="setting-select" id="fontSize">
+                    <option value="12px">Small</option>
+                    <option value="14px" selected>Medium</option>
+                    <option value="16px">Large</option>
+                    <option value="18px">Extra Large</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-label"><i class="fas fa-palette"></i> Theme (25 Available)</label>
+                <div class="theme-grid" id="themeGrid"></div>
+            </div>
+
+            <button class="save-btn" onclick="saveSettings()"><i class="fas fa-save"></i> Save Settings</button>
+        </div>
+    </div>
+
+    <!-- Game Fullscreen -->
+    <div class="game-fullscreen" id="gameFullscreen">
+        <div class="game-header">
+            <div id="currentGameTitle" style="color: var(--accent-color); font-size: 20px; font-weight: 700;"></div>
+            <div style="display: flex; gap: 12px;">
+                <button class="fullscreen-btn" onclick="toggleFullscreen()"><i class="fas fa-expand"></i> Fullscreen</button>
+                <button class="close-game" onclick="closeGame()"><i class="fas fa-times"></i> Close</button>
+            </div>
+        </div>
+        <iframe class="game-iframe" id="gameIframe" title="Game" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        // Game data with Font Awesome icons
+        const games = [
+            { name: "A Dance of Fire and Ice", file: "a_dance_of_fire_and_ice.html", icon: "fa-fire" },
+            { name: "A Difficult Game About Climbing", file: "a_difficult_game_about_climbing.html", icon: "fa-mountain" },
+            { name: "Age of War 2", file: "age_of_war_2.html", icon: "fa-shield" },
+            { name: "Balatro", file: "balatro.html", icon: "fa-cards" },
+            { name: "Basketball Stars", file: "basketball_stars.html", icon: "fa-basketball" },
+            { name: "Binding of Isaac: WOTL", file: "binding_of_issac_wotl.html", icon: "fa-heart-crack" },
+            { name: "Blade Ball", file: "blade_ball.html", icon: "fa-futbol" },
+            { name: "Burrito Bison", file: "burrito_bison.html", icon: "fa-bacon" },
+            { name: "Buster Jam", file: "buster_jam.html", icon: "fa-guitar" },
+            { name: "Celeste", file: "celeste.html", icon: "fa-mountain-sun" },
+            { name: "Cuphead", file: "cup_head.html", icon: "fa-mug-hot" },
+            { name: "Dan the Man", file: "dan_the_man.html", icon: "fa-person-running" },
+            { name: "Deltarune", file: "deltarune.html", icon: "fa-delta" },
+            { name: "Donkey Kong", file: "donkey_kong.html", icon: "fa-drum" },
+            { name: "Drift Hunters", file: "drift_hunters.html", icon: "fa-car" },
+            { name: "Dungeons & Degenerate Gamblers", file: "dungeons___degenerate_gamblers.html", icon: "fa-dice" },
+            { name: "Eat the Rich", file: "eat_the_rich.html", icon: "fa-coins" },
+            { name: "Final Fantasy VII", file: "final_fantasy_vii.html", icon: "fa-dragon" },
+            { name: "Flying Gorilla", file: "flying_gorilla.html", icon: "fa-plane" },
+            { name: "Five Nights at Freddy's", file: "fnaf.html", icon: "fa-moon" },
+            { name: "Five Nights at Freddy's 2", file: "fnaf_2.html", icon: "fa-masks-theater" },
+            { name: "Five Nights at Freddy's 3", file: "fnaf_3.html", icon: "fa-ghost" },
+            { name: "Five Nights at Freddy's 4", file: "fnaf_4.html", icon: "fa-bed" },
+            { name: "Geometry Dash", file: "geometry_dash.html", icon: "fa-shapes" },
+            { name: "Getting Over It", file: "getting_over_it.html", icon: "fa-hammer" },
+            { name: "Goblin Goopmaxxing", file: "goblin_goopmaxxing.html", icon: "fa-flask" },
+            { name: "Google Feud", file: "google_feud.html", icon: "fa-magnifying-glass" },
+            { name: "Gorilla Tag", file: "gorilla_tag.html", icon: "fa-hand" },
+            { name: "GTA Vice City", file: "grand_thef_auto_vice_city.html", icon: "fa-car-on" },
+            { name: "Gun Mayhem 2", file: "gun_mayhem_2.html", icon: "fa-explosion" },
+            { name: "Half-Life: Opposing Force", file: "half_life__opposing_force.html", icon: "fa-atom" },
+            { name: "Happy Wheels", file: "happy_wheels.html", icon: "fa-wheelchair" },
+            { name: "Hollow Knight", file: "hollow_knight.html", icon: "fa-bug" },
+            { name: "Hotline Miami", file: "hotline_miami.html", icon: "fa-phone" },
+            { name: "Ice Dodo", file: "ice_dodo.html", icon: "fa-snowflake" },
+            { name: "Iron Lung", file: "iron_lung.html", icon: "fa-water" },
+            { name: "Jelly Drift", file: "jelly_drift.html", icon: "fa-car-tunnel" },
+            { name: "Johnny Trigger", file: "johnny_trigger.html", icon: "fa-gun" },
+            { name: "Karlson", file: "karlson.html", icon: "fa-cube" },
+            { name: "Kirby Soft & Wet", file: "kirby_soft___wet.html", icon: "fa-circle" },
+            { name: "LEGO Batman 2", file: "lego_batman_2.html", icon: "fa-bat" },
+            { name: "LEGO Star Wars: Complete Saga", file: "lego_starwars_complete_saga.html", icon: "fa-jedi" },
+            { name: "Minecraft 1.12.1", file: "minecraft_1_12_1.html", icon: "fa-cube" },
+            { name: "Paper.io 2", file: "paper_io_2.html", icon: "fa-square" },
+            { name: "Peggle", file: "peggle.html", icon: "fa-bowling-ball" },
+            { name: "People Playground", file: "people_playground.html", icon: "fa-person" },
+            { name: "Pixel Gun 3D", file: "pixel_gun_3d.html", icon: "fa-gun" },
+            { name: "Plants vs Zombies 2", file: "plants_vs_zombies_2.html", icon: "fa-seedling" },
+            { name: "Poly Track", file: "poly_track.html", icon: "fa-road" },
+            { name: "Portal", file: "portal.html", icon: "fa-circle-dot" },
+            { name: "Pou", file: "pou.html", icon: "fa-face-smile" },
+            { name: "Ragdoll Archers", file: "ragdoll_archers.html", icon: "fa-bow-arrow" },
+            { name: "Real Flight Simulator", file: "real_flight_simulator.html", icon: "fa-plane" },
+            { name: "Retro Bowl", file: "retro_bowl.html", icon: "fa-football" },
+            { name: "Retro Bowl College", file: "retro_bowl_college.html", icon: "fa-football" },
+            { name: "Rocket League", file: "rocket_league.html", icon: "fa-car-side" },
+            { name: "Sonic Mania", file: "sonic_mania.html", icon: "fa-bolt" },
+            { name: "Station Saturn", file: "station_saturn.html", icon: "fa-satellite" },
+            { name: "Steal a Brainrot Online", file: "steal_a_brainrot_online.html", icon: "fa-brain" },
+            { name: "Strange Rope Police", file: "strange_rope_police.html", icon: "fa-mask" },
+            { name: "Street Fighter III", file: "street_fighter_iii.html", icon: "fa-hand-back-fist" },
+            { name: "Super Monkey Ball", file: "super_monkey_ball.html", icon: "fa-circle" },
+            { name: "SUPERHOT", file: "superhot.html", icon: "fa-fire" },
+            { name: "Survivor.io", file: "survivor_io.html", icon: "fa-skull-crossbones" },
+            { name: "Tag", file: "tag.html", icon: "fa-tag" },
+            { name: "Tanuki Sunset", file: "tanuki_sunset.html", icon: "fa-sun" },
+            { name: "Terraria", file: "terraria.html", icon: "fa-gem" },
+            { name: "Ultimate Car Driving Game", file: "ultimate_car_driving_game.html", icon: "fa-car" }
+        ];
+
+        // 25 Themes - some animated, some static
+        const themes = {
+            "Fire Orange": { emoji: "🔥", primary: '#0a0a0a', secondary: '#1a1a1a', tertiary: '#2d2d2d', accent: '#ff6600', accentHover: '#ff8833', animated: true },
+            "Diamond Blue": { emoji: "💎", primary: '#001a33', secondary: '#003366', tertiary: '#004d99', accent: '#0099ff', accentHover: '#33adff', animated: true },
+            "Mystic Purple": { emoji: "🔮", primary: '#1a001a', secondary: '#330033', tertiary: '#4d004d', accent: '#9900ff', accentHover: '#b333ff', animated: true },
+            "Forest Green": { emoji: "🌿", primary: '#001a00', secondary: '#003300', tertiary: '#004d00', accent: '#00cc00', accentHover: '#33ff33', animated: false },
+            "Crimson Red": { emoji: "❤️", primary: '#1a0000', secondary: '#330000', tertiary: '#4d0000', accent: '#ff0000', accentHover: '#ff3333', animated: true },
+            "Ocean Cyan": { emoji: "🌊", primary: '#001f3f', secondary: '#003d66', tertiary: '#005c8f', accent: '#00d4ff', accentHover: '#33e0ff', animated: true },
+            "Sakura Pink": { emoji: "🌸", primary: '#1a0011', secondary: '#330022', tertiary: '#4d0033', accent: '#ff00aa', accentHover: '#ff33bb', animated: true },
+            "Golden Star": { emoji: "⭐", primary: '#1a1500', secondary: '#332a00', tertiary: '#4d3f00', accent: '#ffd700', accentHover: '#ffed4e', animated: true },
+            "Lime Zest": { emoji: "🍋", primary: '#0f1a00', secondary: '#1e3300', tertiary: '#2d4d00', accent: '#a0ff00', accentHover: '#b8ff33', animated: false },
+            "Galaxy Purple": { emoji: "🌌", primary: '#0d0015', secondary: '#1a002a', tertiary: '#27003f', accent: '#b800ff', accentHover: '#d433ff', animated: true },
+            "Tangerine": { emoji: "🍊", primary: '#1a0f00', secondary: '#331e00', tertiary: '#4d2d00', accent: '#ff8800', accentHover: '#ffaa33', animated: false },
+            "Dragon Red": { emoji: "🐉", primary: '#150000', secondary: '#2a0000', tertiary: '#3f0000', accent: '#ff1a1a', accentHover: '#ff4d4d', animated: true },
+            "Midnight Blue": { emoji: "🌙", primary: '#00000f', secondary: '#00001e', tertiary: '#00002d', accent: '#4d4dff', accentHover: '#8080ff', animated: false },
+            "Emerald": { emoji: "🍀", primary: '#001a0f', secondary: '#00331e', tertiary: '#004d2d', accent: '#00ff88', accentHover: '#33ffaa', animated: false },
+            "Lava": { emoji: "🔥", primary: '#1a0a00', secondary: '#331400', tertiary: '#4d1e00', accent: '#ff4400', accentHover: '#ff6633', animated: true },
+            "Rainbow": { emoji: "🌈", primary: '#0a0a0a', secondary: '#1a1a1a', tertiary: '#2d2d2d', accent: '#ff00ff', accentHover: '#ff66ff', animated: true },
+            "Ice Blue": { emoji: "🧊", primary: '#000f1a', secondary: '#001e33', tertiary: '#002d4d', accent: '#00ccff', accentHover: '#33ddff', animated: false },
+            "Grape": { emoji: "🍇", primary: '#0f000f', secondary: '#1e001e', tertiary: '#2d002d', accent: '#cc00ff', accentHover: '#dd33ff', animated: false },
+            "Tropical": { emoji: "🌺", primary: '#1a0a0f', secondary: '#33141e', tertiary: '#4d1e2d', accent: '#ff3366', accentHover: '#ff6699', animated: true },
+            "Electric Yellow": { emoji: "⚡", primary: '#1a1a00', secondary: '#333300', tertiary: '#4d4d00', accent: '#ffff00', accentHover: '#ffff66', animated: true },
+            "Dark Matter": { emoji: "🌑", primary: '#050505', secondary: '#0f0f0f', tertiary: '#1a1a1a', accent: '#666666', accentHover: '#999999', animated: false },
+            "Neon Pink": { emoji: "🎨", primary: '#1a001a', secondary: '#330033', tertiary: '#4d004d', accent: '#ff0080', accentHover: '#ff33aa', animated: true },
+            "Mint": { emoji: "🌿", primary: '#001a11', secondary: '#003322', tertiary: '#004d33', accent: '#00ffaa', accentHover: '#33ffcc', animated: false },
+            "Amber": { emoji: "🔶", primary: '#1a0f00', secondary: '#331e00', tertiary: '#4d2d00', accent: '#ffaa00', accentHover: '#ffcc33', animated: false },
+            "Neon": { emoji: "🌃", primary: '#000a1a', secondary: '#001433', tertiary: '#001e4d', accent: '#00ffff', accentHover: '#33ffff', animated: true }
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Initializing BT VAULT...');
+            createParticles();
+            loadSettings();
+            renderGames();
+            renderThemes();
+            setupTabs();
+            setupPanicKeybind();
+            initChat();
+            updateOnlineCount();
+            console.log('✅ Games rendered:', games.length);
+            console.log('✅ Themes rendered:', Object.keys(themes).length);
+            
+            // Check if body has animated-theme class
+            setTimeout(() => {
+                const hasAnimatedClass = document.body.classList.contains('animated-theme');
+                console.log('🎨 Animated theme active:', hasAnimatedClass);
+                if (hasAnimatedClass) {
+                    console.log('✨ You should see:');
+                    console.log('   - Particles floating up');
+                    console.log('   - Pulsing glow in center');
+                    console.log('   - Sliding grid pattern');
+                    console.log('   - Header glow pulsing');
+                }
+            }, 1000);
+        });
+
+        // Test function users can call from console
+        window.testAnimations = function() {
+            console.log('🧪 ANIMATION TEST STARTING...');
+            console.log('');
+            
+            // Test 1: Check particles
+            const particles = document.querySelectorAll('.particle');
+            console.log('1️⃣ Particles:', particles.length, particles.length >= 50 ? '✅' : '❌');
+            
+            // Test 2: Check animated class
+            const hasClass = document.body.classList.contains('animated-theme');
+            console.log('2️⃣ Animated Theme Class:', hasClass ? '✅' : '❌');
+            
+            // Test 3: Check CSS variables
+            const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-color');
+            console.log('3️⃣ Accent Color:', accentColor, '✅');
+            
+            // Test 4: Force enable animations
+            console.log('');
+            console.log('🔧 Force-enabling animations...');
+            document.body.classList.add('animated-theme');
+            
+            // Test 5: Add a test particle
+            const testParticle = document.createElement('div');
+            testParticle.className = 'particle';
+            testParticle.style.left = '50%';
+            testParticle.style.animation = 'particle-rise 5s linear infinite';
+            testParticle.style.width = '10px';
+            testParticle.style.height = '10px';
+            testParticle.style.backgroundColor = 'red';
+            testParticle.style.zIndex = '9999';
+            document.getElementById('bgParticles').appendChild(testParticle);
+            console.log('4️⃣ Test particle added (RED, center): ✅');
+            
+            console.log('');
+            console.log('👀 Watch for:');
+            console.log('   - RED test particle in center (should rise)');
+            console.log('   - Orange particles floating up');
+            console.log('   - Pulsing glow effect');
+            console.log('   - Grid sliding pattern');
+        };
+
+        // Create animated particles
+        function createParticles() {
+            const container = document.getElementById('bgParticles');
+            if (!container) {
+                console.error('❌ Particle container not found!');
+                return;
+            }
+            
+            console.log('🎨 Creating particles...');
+            
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random horizontal position
+                const leftPos = Math.random() * 100;
+                particle.style.left = leftPos + '%';
+                
+                // Random animation duration (8-20 seconds)
+                const duration = (Math.random() * 12 + 8);
+                
+                // Random delay (0-5 seconds)
+                const delay = Math.random() * 5;
+                
+                // Apply animation
+                particle.style.animation = `particle-rise ${duration}s linear ${delay}s infinite`;
+                
+                container.appendChild(particle);
+            }
+            
+            console.log('✅ Created 50 animated particles');
+            
+            // Verify particles exist
+            setTimeout(() => {
+                const count = container.querySelectorAll('.particle').length;
+                console.log('✅ Verified:', count, 'particles in DOM');
+            }, 100);
+        }
+
+        // Render games
+        function renderGames() {
+            const grid = document.getElementById('gamesGrid');
+            if (!grid) {
+                console.error('Games grid not found!');
+                return;
+            }
+            
+            grid.innerHTML = games.map(game => `
+                <div class="game-card" data-name="${game.name.toLowerCase()}">
+                    <div class="game-icon"><i class="fas ${game.icon}"></i></div>
+                    <div class="game-title">${game.name}</div>
+                    <div class="game-actions">
+                        <button class="launch-btn" onclick="launchGame('${game.file}', '${game.name}')">
+                            <i class="fas fa-play"></i> Launch
+                        </button>
+                        <button class="download-btn" onclick="downloadGame('${game.file}', '${game.name}')">
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            console.log('Games grid populated with', games.length, 'games');
+        }
+
+        // Render themes
+        function renderThemes() {
+            const grid = document.getElementById('themeGrid');
+            if (!grid) {
+                console.error('Theme grid not found!');
+                return;
+            }
+            
+            grid.innerHTML = Object.entries(themes).map(([name, theme]) => `
+                <div class="theme-card" data-theme="${name}" onclick="selectTheme('${name}')">
+                    <span class="theme-emoji">${theme.emoji}</span>
+                    <div class="theme-name">${name}</div>
+                    <span class="theme-badge ${theme.animated ? 'animated' : 'static'}">
+                        ${theme.animated ? '✨ Animated' : '🔇 Static'}
+                    </span>
+                </div>
+            `).join('');
+            
+            console.log('Theme grid populated with', Object.keys(themes).length, 'themes');
+        }
+
+        // Tab switching
+        function setupTabs() {
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+                    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    document.getElementById(targetTab).classList.add('active');
+                });
+            });
+        }
+
+        // Game functions
+        function launchGame(url, title) {
+            const gameFullscreen = document.getElementById('gameFullscreen');
+            const gameIframe = document.getElementById('gameIframe');
+            const gameTitle = document.getElementById('currentGameTitle');
+            
+            gameTitle.innerHTML = `<i class="fas fa-gamepad"></i> ${title}`;
+            gameIframe.src = url;
+            gameFullscreen.classList.add('active');
+        }
+
+        function closeGame() {
+            const gameFullscreen = document.getElementById('gameFullscreen');
+            const gameIframe = document.getElementById('gameIframe');
+            
+            gameFullscreen.classList.remove('active');
+            gameIframe.src = '';
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            }
+        }
+
+        function toggleFullscreen() {
+            const iframe = document.getElementById('gameIframe');
+            if (!document.fullscreenElement) {
+                if (iframe.requestFullscreen) {
+                    iframe.requestFullscreen();
+                } else if (iframe.webkitRequestFullscreen) {
+                    iframe.webkitRequestFullscreen();
+                } else if (iframe.mozRequestFullScreen) {
+                    iframe.mozRequestFullScreen();
+                } else if (iframe.msRequestFullscreen) {
+                    iframe.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        function downloadGame(file, name) {
+            const link = document.createElement('a');
+            link.href = file;
+            link.download = file;
+            link.click();
+        }
+
+        // Search
+        function filterGames() {
+            const searchInput = document.getElementById('searchBar').value.toLowerCase();
+            const gameCards = document.querySelectorAll('.game-card');
+            const noResults = document.getElementById('noResults');
+            let visibleCount = 0;
+
+            gameCards.forEach(card => {
+                const gameName = card.getAttribute('data-name');
+                if (gameName.includes(searchInput)) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            if (noResults) {
+                noResults.style.display = (visibleCount === 0 && searchInput !== '') ? 'block' : 'none';
+            }
+        }
+
+        // Panic system
+        function activatePanic() {
+            const panicUrl = localStorage.getItem('panicUrl') || 'https://classroom.google.com';
+            window.top.location.replace(panicUrl);
+        }
+
+        let isRecordingKeybind = false;
+        
+        function setupPanicKeybind() {
+            document.addEventListener('keydown', function(e) {
+                if (isRecordingKeybind) return;
+                
+                const savedKeybind = localStorage.getItem('panicKeybind');
+                if (savedKeybind) {
+                    const keybind = JSON.parse(savedKeybind);
+                    if (
+                        e.key === keybind.key &&
+                        e.ctrlKey === keybind.ctrl &&
+                        e.shiftKey === keybind.shift &&
+                        e.altKey === keybind.alt
+                    ) {
+                        e.preventDefault();
+                        activatePanic();
+                    }
+                }
+            });
+        }
+
+        function recordKeybind() {
+            const input = document.getElementById('panicKeybind');
+            input.value = '⌨️ Press keys...';
+            input.style.backgroundColor = 'var(--accent-color)';
+            input.style.color = 'white';
+            isRecordingKeybind = true;
+
+            const recordHandler = function(e) {
+                e.preventDefault();
+                
+                const keys = [];
+                if (e.ctrlKey) keys.push('Ctrl');
+                if (e.shiftKey) keys.push('Shift');
+                if (e.altKey) keys.push('Alt');
+                
+                if (!['Control', 'Shift', 'Alt'].includes(e.key)) {
+                    keys.push(e.key.toUpperCase());
+                }
+
+                if (keys.length > 0 && !['Control', 'Shift', 'Alt'].includes(e.key)) {
+                    const keybindString = keys.join(' + ');
+                    input.value = keybindString;
+                    input.style.backgroundColor = 'var(--bg-tertiary)';
+                    input.style.color = 'var(--text-primary)';
+                    
+                    const keybind = {
+                        key: e.key,
+                        ctrl: e.ctrlKey,
+                        shift: e.shiftKey,
+                        alt: e.altKey,
+                        display: keybindString
+                    };
+                    localStorage.setItem('panicKeybind', JSON.stringify(keybind));
+                    
+                    isRecordingKeybind = false;
+                    document.removeEventListener('keydown', recordHandler);
+                }
+            };
+
+            document.addEventListener('keydown', recordHandler);
+        }
+
+        function clearKeybind() {
+            localStorage.removeItem('panicKeybind');
+            document.getElementById('panicKeybind').value = '';
+        }
+
+        // Settings
+        function openSettings() {
+            document.getElementById('settingsModal').classList.add('active');
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.remove('active');
+        }
+
+        function selectTheme(themeName) {
+            document.querySelectorAll('.theme-card').forEach(opt => opt.classList.remove('active'));
+            const option = document.querySelector(`[data-theme="${themeName}"]`);
+            if (option) option.classList.add('active');
+        }
+
+        function saveSettings() {
+            const panicUrl = document.getElementById('panicUrl').value;
+            const username = document.getElementById('username').value;
+            const selectedTheme = document.querySelector('.theme-card.active')?.getAttribute('data-theme') || "Fire Orange";
+            const animationSpeed = document.getElementById('animationSpeed').value;
+            const blurEffect = document.getElementById('blurEffect').value;
+            const fontSize = document.getElementById('fontSize').value;
+            
+            localStorage.setItem('panicUrl', panicUrl);
+            localStorage.setItem('username', username);
+            localStorage.setItem('theme', selectedTheme);
+            localStorage.setItem('animationSpeed', animationSpeed);
+            localStorage.setItem('blurEffect', blurEffect);
+            localStorage.setItem('fontSize', fontSize);
+            
+            applyTheme(selectedTheme);
+            applyCustomizations();
+            closeSettings();
+            
+            const btn = document.querySelector('.save-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+            setTimeout(() => btn.innerHTML = originalText, 2000);
+        }
+
+        function loadSettings() {
+            const panicUrl = localStorage.getItem('panicUrl') || 'https://classroom.google.com';
+            const username = localStorage.getItem('username') || 'Player';
+            const theme = localStorage.getItem('theme') || "Fire Orange";
+            const keybind = localStorage.getItem('panicKeybind');
+            const animationSpeed = localStorage.getItem('animationSpeed') || '0.3s';
+            const blurEffect = localStorage.getItem('blurEffect') || '10px';
+            const fontSize = localStorage.getItem('fontSize') || '14px';
+            
+            document.getElementById('panicUrl').value = panicUrl;
+            document.getElementById('username').value = username;
+            document.getElementById('animationSpeed').value = animationSpeed;
+            document.getElementById('blurEffect').value = blurEffect;
+            document.getElementById('fontSize').value = fontSize;
+            
+            if (keybind) {
+                const keybindData = JSON.parse(keybind);
+                document.getElementById('panicKeybind').value = keybindData.display;
+            }
+            
+            selectTheme(theme);
+            applyTheme(theme);
+            applyCustomizations();
+        }
+
+        function applyTheme(themeName) {
+            const theme = themes[themeName];
+            if (!theme) {
+                console.error('Theme not found:', themeName);
+                return;
+            }
+            
+            const root = document.documentElement;
+            root.style.setProperty('--bg-primary', theme.primary);
+            root.style.setProperty('--bg-secondary', theme.secondary);
+            root.style.setProperty('--bg-tertiary', theme.tertiary);
+            root.style.setProperty('--accent-color', theme.accent);
+            root.style.setProperty('--accent-hover', theme.accentHover);
+
+            // Toggle animated theme class with force
+            if (theme.animated) {
+                document.body.classList.add('animated-theme');
+                console.log('✨ Animated theme applied:', themeName);
+            } else {
+                document.body.classList.remove('animated-theme');
+                console.log('🔇 Static theme applied:', themeName);
+            }
+            
+            // Force repaint
+            void document.body.offsetHeight;
+        }
+
+        function applyCustomizations() {
+            const root = document.documentElement;
+            const animationSpeed = localStorage.getItem('animationSpeed') || '0.3s';
+            const blurEffect = localStorage.getItem('blurEffect') || '10px';
+            const fontSize = localStorage.getItem('fontSize') || '14px';
+            
+            root.style.setProperty('--animation-speed', animationSpeed);
+            root.style.setProperty('--card-blur', blurEffect);
+            document.body.style.fontSize = fontSize;
+        }
+
+        // Chat functions
+        function initChat() {
+            loadLocalMessages();
+            addSystemMessage('Welcome to BT VAULT! Chat is in local mode. Messages saved on your device.');
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                const username = localStorage.getItem('username') || 'Player';
+                const timestamp = Date.now();
+                
+                addMessageToChat(username, message, timestamp);
+                saveLocalMessage(username, message, timestamp);
+                input.value = '';
+            }
+        }
+
+        function handleChatEnter(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function addMessageToChat(username, message, timestamp, skipSave = false) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message';
+            
+            const date = new Date(timestamp);
+            const timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            messageDiv.innerHTML = `
+                <div class="chat-username"><i class="fas fa-user"></i> ${username}</div>
+                <div class="chat-text">${message}</div>
+                <div class="chat-time"><i class="fas fa-clock"></i> ${timeString}</div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function addSystemMessage(message) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message';
+            messageDiv.style.borderLeftColor = '#00ff88';
+            
+            messageDiv.innerHTML = `
+                <div class="chat-username"><i class="fas fa-robot"></i> System</div>
+                <div class="chat-text">${message}</div>
+                <div class="chat-time"><i class="fas fa-clock"></i> ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function saveLocalMessage(username, message, timestamp) {
+            const messages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
+            messages.push({ username, message, timestamp });
+            if (messages.length > 100) messages.shift();
+            localStorage.setItem('chatMessages', JSON.stringify(messages));
+        }
+
+        function loadLocalMessages() {
+            const messages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
+            messages.forEach(msg => {
+                addMessageToChat(msg.username, msg.message, msg.timestamp, true);
+            });
+        }
+
+        function updateOnlineCount() {
+            const count = Math.floor(Math.random() * 50) + 10;
+            const elem = document.getElementById('onlineCount');
+            if (elem) elem.textContent = count;
+            setInterval(() => {
+                const newCount = Math.floor(Math.random() * 50) + 10;
+                if (elem) elem.textContent = newCount;
+            }, 30000);
+        }
+
+        // Escape key closes modals and games
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeSettings();
+                if (document.getElementById('gameFullscreen').classList.contains('active')) {
+                    closeGame();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
